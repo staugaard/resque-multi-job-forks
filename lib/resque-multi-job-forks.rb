@@ -29,7 +29,7 @@ module Resque
 
         @jobs_processed += 1
 
-        if @jobs_processed == 1 && jobs_per_fork > 1
+        if @jobs_processed == 1
           old_after_fork = Resque.after_fork
           Resque.after_fork = nil
           
