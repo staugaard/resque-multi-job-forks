@@ -26,14 +26,19 @@ module Resque
 
         self.jobs_per_fork ||= [ ENV['JOBS_PER_FORK'].to_i, 1 ].max
         @jobs_processed ||= 0
+
         @jobs_processed += 1
 
-        if @jobs_processed < jobs_per_fork && job = reserve
+        if @jobs_processed == 1 && jobs_per_fork > 1
           old_after_fork = Resque.after_fork
           Resque.after_fork = nil
-          process(job)
+          
+          while @jobs_processed < jobs_per_fork && job = reserve
+            process(job)
+          end
+
           Resque.after_fork = old_after_fork
-        else
+
           run_hook :before_child_exit, self
           @jobs_processed = 0
         end
