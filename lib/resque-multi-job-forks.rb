@@ -21,26 +21,36 @@ module Resque
     attr_reader   :jobs_processed
 
     unless method_defined?(:done_working_without_multi_job_forks)
+      def process_with_multi_job_forks(job = nil)
+        @jobs_processed ||= 0
+        @kill_fork_at ||= Time.now.to_i + (ENV['MINUTES_PER_FORK'].to_i * 60)
+        process_without_multi_job_forks(job)
+      end
+      alias_method :process_without_multi_job_forks, :process
+      alias_method :process, :process_with_multi_job_forks
+
       def done_working_with_multi_job_forks
         done_working_without_multi_job_forks
-
-        self.jobs_per_fork ||= [ ENV['JOBS_PER_FORK'].to_i, 1 ].max
-        @jobs_processed ||= 0
 
         @jobs_processed += 1
 
         if @jobs_processed == 1
           old_after_fork = Resque.after_fork
           Resque.after_fork = nil
-          
-          while @jobs_processed < jobs_per_fork && job = reserve
-            process(job)
+
+          while Time.now.to_i < @kill_fork_at
+            if job = reserve
+              process(job)
+            else
+              sleep(1)
+            end
           end
 
           Resque.after_fork = old_after_fork
 
           run_hook :before_child_exit, self
-          @jobs_processed = 0
+          @jobs_processed = nil
+          @kill_fork_at = nil
         end
       end
       alias_method :done_working_without_multi_job_forks, :done_working
