@@ -3,7 +3,6 @@ PATH
   specs:
     resque-multi-job-forks (0.2.0)
       json
-      redis (< 2.0)
       resque (~> 1.10.0)
 
 GEM
@@ -12,7 +11,7 @@ GEM
     json (1.4.6)
     rack (1.2.1)
     rake (0.8.7)
-    redis (1.0.7)
+    redis (2.1.1)
     redis-namespace (0.8.0)
       redis (< 3.0.0)
     resque (1.10.0)
@@ -34,6 +33,5 @@ DEPENDENCIES
   bundler
   json
   rake
-  redis (< 2.0)
   resque (~> 1.10.0)
   resque-multi-job-forks!
