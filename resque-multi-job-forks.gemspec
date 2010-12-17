@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.summary     = "Have your resque workers process more that one job"
   s.description = "When your resque jobs are frequent and fast, the overhead of forking and running your after_fork might get too big."
 
-  s.add_runtime_dependency("resque", "< 1.8.0")
+  s.add_runtime_dependency("resque", "~> 1.10.0")
   s.add_runtime_dependency("redis", "< 2.0")
   s.add_runtime_dependency("json")
 
