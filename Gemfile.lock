@@ -1,0 +1,39 @@
+PATH
+  remote: .
+  specs:
+    resque-multi-job-forks (0.2.0)
+      json
+      redis (< 2.0)
+      resque (< 1.8.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    json (1.4.6)
+    rack (1.2.1)
+    rake (0.8.7)
+    redis (1.0.7)
+    redis-namespace (0.10.0)
+      redis (< 3.0.0)
+    resque (1.7.1)
+      redis
+      redis-namespace
+      sinatra (>= 0.9.2)
+      vegas (>= 0.1.2)
+    sinatra (1.1.0)
+      rack (~> 1.1)
+      tilt (~> 1.1)
+    tilt (1.1)
+    vegas (0.1.8)
+      rack (>= 1.0.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler
+  json
+  rake
+  redis (< 2.0)
+  resque (< 1.8.0)
+  resque-multi-job-forks!
