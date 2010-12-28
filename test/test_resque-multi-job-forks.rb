@@ -10,18 +10,18 @@ class TestResqueMultiJobForks < Test::Unit::TestCase
   def test_timeout_limit_sequence_of_events
     # only allow enough time for 3 jobs to process.
     @worker.seconds_per_fork = 3
-  
+
     Resque.enqueue(SequenceJob, 1)
     Resque.enqueue(SequenceJob, 2)
     Resque.enqueue(SequenceJob, 3)
     Resque.enqueue(SequenceJob, 4)
-  
+
     # make sure we don't take longer then 15 seconds.
     begin
       Timeout::timeout(15) { @worker.work(1) }
     rescue Timeout::Error
     end
-  
+
     # test the sequence is correct.
     assert_equal([:before_fork, :after_fork, :work_1, :work_2, :work_3,
                   :before_child_exit_3, :before_fork, :after_fork, :work_4,
@@ -50,7 +50,7 @@ class TestResqueMultiJobForks < Test::Unit::TestCase
     assert_equal :work_40, $SEQUENCE[44], '40th chunk of work.'
     assert_equal :before_child_exit_20, $SEQUENCE[45], 'final before_child_exit call.'
   end
-  
+
   def teardown
     # make sure we don't clobber any other tests.
     ENV['JOBS_PER_FORK'] = nil

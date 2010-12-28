@@ -43,6 +43,7 @@ module Resque
       Resque.after_fork, Resque.before_fork = *@suppressed_fork_hooks
       @release_fork_limit = @jobs_processed = @cant_fork = nil
       log 'hijack over, counter terrorists win.'
+      @shutdown = true unless $TESTING
     end
 
     def fork_job_limit
