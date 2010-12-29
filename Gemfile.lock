@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    resque-multi-job-forks (0.3.0)
+    resque-multi-job-forks (0.3.1)
       json
       resque (~> 1.10.0)
 
